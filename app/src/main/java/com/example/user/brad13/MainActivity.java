@@ -1,18 +1,36 @@
 package com.example.user.brad13;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
     private boolean isStart;
+    private MyReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        receiver = new MyReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("brad");
+        registerReceiver(receiver, filter);
+
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        unregisterReceiver(receiver);
+    }
+
     public void startService(View v){
         Intent it = new Intent(this, MyService.class);
         it.putExtra("isstart", isStart);
@@ -24,5 +42,11 @@ public class MainActivity extends AppCompatActivity {
         Intent it = new Intent(this, MyService.class);
         stopService(it);
 
+    }
+    private class MyReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.v("brad", "got it");
+        }
     }
 }

@@ -53,6 +53,10 @@ public class MyService extends Service {
         @Override
         public void run() {
             Log.v("brad", "i = " + i++);
+
+            Intent it = new Intent("brad");
+            sendBroadcast(it);
+
         }
     }
 
